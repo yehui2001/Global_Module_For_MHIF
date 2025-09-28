@@ -6,6 +6,7 @@ import scipy.io as sio
 import scipy.interpolate as spi
 import tensorly as tl
 import logging
+import glob
 
 def gauss_kernel(row_size, col_size, sigma):
     kernel = cv2.getGaussianKernel(row_size, sigma)
@@ -128,3 +129,59 @@ def save_checkpoint(model_path, epoch, model, optimizer):
         'optimizer': optimizer.state_dict(),
     }
     torch.save(state, os.path.join(model_path, 'net_%depoch.pth' % epoch))
+
+
+import re
+def get_best_model_name_from_log(log_path):
+    """
+    从train.log中自动获取Eval PSNR最高的epoch，并返回对应的模型文件名
+
+
+    :param log_path: 日志文件路径
+    :return: 最佳模型文件名（如 net_149epoch.pth）
+    """
+
+
+
+    best_psnr = -float('inf')
+    best_epoch = None
+    pattern = re.compile(r'Epoch\[(\d+)\].*Eval PSNR: ([\d\.]+)')
+
+    with open(log_path, 'r') as f:
+        for line in f:
+            match = pattern.search(line)
+            if match:
+                epoch = int(match.group(1))
+                psnr = float(match.group(2))
+                if psnr > best_psnr:
+                    best_psnr = psnr
+                    best_epoch = epoch
+
+    if best_epoch is not None:
+        return f'net_{best_epoch}epoch.pth'
+    else:
+        raise ValueError("未找到有效的PSNR记录！")
+
+def keep_only_best_model(model_dir, best_model_name):
+    """
+    只保留指定的最佳模型文件，删除其他 .pth 文件
+
+    :param model_dir: 模型文件夹路径
+    :param best_model_name: 最佳模型文件名（如 'net_149epoch.pth'）
+    """
+    best_model_path = os.path.join(model_dir, best_model_name)
+    print(best_model_path)
+    all_pth_files = glob.glob(os.path.join(model_dir, "*.pth"))
+    for file_path in all_pth_files:
+        if os.path.abspath(file_path) != os.path.abspath(best_model_path):
+            os.remove(file_path)
+            print(f"Deleted: {file_path}")
+    print(f"Kept best model: {best_model_path}")
+
+def save_best_pth(args):
+    model_dir = os.path.dirname(args.model_path)                # 获得存放model的目录
+    log_path = os.path.dirname(model_dir)                       # 获得存放log的目录
+    log_path = os.path.join(log_path, 'train.log')              # 添加后缀
+    best_model_name = get_best_model_name_from_log(log_path)    # 从log中找到最佳的Epoch
+    keep_only_best_model(model_dir, best_model_name)            # 保存最佳的pth
+    print("success")
