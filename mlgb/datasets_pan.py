@@ -148,7 +148,9 @@ class CaveDataset(Dataset):
 
     def __len__(self):
         return self.label.shape[0]
-
+    
+class QuickBirdDataset:
+    pass
 
 class HoustonDataset:
     pass

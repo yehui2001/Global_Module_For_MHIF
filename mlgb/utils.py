@@ -180,8 +180,7 @@ def keep_only_best_model(model_dir, best_model_name):
 
 def save_best_pth(args):
     model_dir = os.path.dirname(args.model_path)                # 获得存放model的目录
-    log_path = os.path.dirname(model_dir)                       # 获得存放log的目录
-    log_path = os.path.join(log_path, 'train.log')              # 添加后缀
+    log_path = os.path.join(args.log_path, 'train.log')              # 添加后缀
     best_model_name = get_best_model_name_from_log(log_path)    # 从log中找到最佳的Epoch
     keep_only_best_model(model_dir, best_model_name)            # 保存最佳的pth
     print("success")
