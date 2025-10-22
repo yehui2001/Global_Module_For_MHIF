@@ -1,7 +1,7 @@
 from functools import partial
 from numpy import True_
 from torch.utils.data import DataLoader
-from mlgb.datasets_pan import CaveDataset
+from mlgb.datasets_pan import CaveDataset, QuickBirdDataset
 import random
 import torch
 import numpy as np
@@ -24,17 +24,15 @@ def get_dataloader(args):
         testLoader = DataLoader(data_test, batch_size=1, num_workers=args.num_workers,shuffle=False,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
         dataloader = {'train': trainLoader, 'eval': evalLoader, 'test': testLoader}
         print_info(dataloader,args) # 打印相关参数
-    elif (args.dataset == 'PaviaC'):
-        pass
-
-    elif (args.dataset == 'PaviaU'):
-        pass
-    
-    elif (args.dataset == 'XiongAn'):
-        pass
-
-    elif (args.dataset == 'Harvard'):
-        pass
+    elif (args.dataset == 'QuickBird'):
+        data_train = QuickBirdDataset(args.ms_data_path,args.pan_data_path,args.patch_size,args.stride,args.ratio,type='train')
+        trainLoader = DataLoader(data_train, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=True,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
+        data_eval = QuickBirdDataset(args.ms_data_path,args.pan_data_path,args.patch_size,args.stride,args.ratio,type='train')
+        evalLoader = DataLoader(data_eval, batch_size=1, num_workers=args.num_workers, shuffle=True,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
+        data_test = QuickBirdDataset(args.ms_data_path,args.pan_data_path,args.patch_size,args.stride,args.ratio,type='test')
+        testLoader = DataLoader(data_test, batch_size=1, num_workers=args.num_workers,shuffle=False,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
+        dataloader = {'train': trainLoader, 'test': testLoader}
+        print_info(dataloader,args) # 打印相关参数 
 
     elif (args.dataset == 'WDCM'):
         pass

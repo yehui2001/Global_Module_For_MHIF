@@ -3,23 +3,26 @@ class Args:
     def __init__(self):
         self.method = 'origin'
         self.device  = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.dataset = 'CAVE' # self.dataset = 'chikusei'  # 'chikusei' or 'xiongan'
+        self.dataset = 'QuickBird' # self.dataset = 'chikusei'  # 'chikusei' or 'xiongan'
         self.pretrained_model_path = None
-        self.batch_size = 32
+        self.batch_size = 16
         self.end_epoch = 150
         self.init_lr = 2e-4
         self.ratio = 8
-        self.data_path = '/yehui/datasets/CAVE/'
-        self.gen_path = '/yehui/GuidedNet/dataset'
+        # self.data_path = '/yehui/datasets/CAVE/'
+        # self.gen_path = '/yehui/GuidedNet/dataset'
+        self.PAN_path = '/yehui/datasets/QuickBird/PAN_1024/'
+        self.MS_path = '/yehui/datasets/QuickBird/MS_256/'
         # self.data_path = '/yehui/GuidedNet/dataset/PaviaU/PaviaU.mat'
         # self.gen_path = '/yehui/GuidedNet/dataset/'
-        self.patch_size = 8
+        self.patch_size = 16
         self.stride = 6
         self.gpu_id = '1'
         self.iteration_batch = 100
         self.num_workers = 0
-        self.hsi_channels = 31
-        self.msi_channels = 3
+        self.hsi_channels = 4
+        self.pan_channels = 1
+        self.msi_channels = 4
         self.seed = 42
         self.auto_patch = True
         self.enable_log = True # Enable or disable logging
