@@ -31,7 +31,7 @@ def get_dataloader(args):
         evalLoader = DataLoader(data_eval, batch_size=1, num_workers=args.num_workers, shuffle=True,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
         data_test = QuickBirdDataset(args.ms_data_path,args.pan_data_path,args.patch_size,args.stride,args.ratio,type='test')
         testLoader = DataLoader(data_test, batch_size=1, num_workers=args.num_workers,shuffle=False,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
-        dataloader = {'train': trainLoader, 'test': testLoader}
+        dataloader = {'train': trainLoader,'eval':evalLoader,'test': testLoader}
         print_info(dataloader,args) # 打印相关参数 
 
     elif (args.dataset == 'WDCM'):

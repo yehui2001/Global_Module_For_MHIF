@@ -1,5 +1,4 @@
 import numpy as np
-import tensorflow as tf
 import cv2
 import os
 from skimage.metrics import peak_signal_noise_ratio as compare_psnr
