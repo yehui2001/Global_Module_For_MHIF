@@ -5,7 +5,7 @@ class Args:
         self.device  = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.dataset = 'QuickBird' # self.dataset = 'chikusei'  # 'chikusei' or 'xiongan'
         self.pretrained_model_path = None
-        self.batch_size = 16
+        self.batch_size = 8
         self.end_epoch = 150
         self.init_lr = 2e-4
         self.ratio = 8

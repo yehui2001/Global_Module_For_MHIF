@@ -152,10 +152,13 @@ def ERGAS(references, target, ratio):
     tar_temp = np.reshape(target, [pixels, bands], order='F')
     err = ref_temp - tar_temp
     rmse2 = np.sum(err ** 2, axis=0) / pixels
+    # uk_safe = np.where(uk == 0, 1e-10, uk)  # 如果uk为0，替换为小常数
+    # relative_rmse2 = rmse2 / uk_safe ** 2
     uk = np.mean(tar_temp, axis=0)
     relative_rmse2 = rmse2 / uk ** 2
     total_relative_rmse = np.sum(relative_rmse2)
     out = 100 * d * np.sqrt(1 / bands * total_relative_rmse)
     return out
+
 
 

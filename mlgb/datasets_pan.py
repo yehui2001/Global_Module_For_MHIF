@@ -166,7 +166,7 @@ class QuickBirdDataset(Dataset):
         if self.type == 'train':
             self.ms_data, self.pan_data, self.label = self.generateTrain(0,400)
         elif self.type == 'eval':
-            self.ms_data, self.pan_data, self.label = self.generateEval(400,400)
+            self.ms_data, self.pan_data, self.label = self.generateEval(400,401) # num_samples 不能为非正数
         elif self.type == 'test':
             self.ms_data, self.pan_data, self.label = self.generateTest(400,500)
 

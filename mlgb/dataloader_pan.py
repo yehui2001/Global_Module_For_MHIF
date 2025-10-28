@@ -27,7 +27,7 @@ def get_dataloader(args):
     elif (args.dataset == 'QuickBird'):
         data_train = QuickBirdDataset(args.ms_data_path,args.pan_data_path,args.patch_size,args.stride,args.ratio,type='train')
         trainLoader = DataLoader(data_train, batch_size=args.batch_size, num_workers=args.num_workers, shuffle=True,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
-        data_eval = QuickBirdDataset(args.ms_data_path,args.pan_data_path,args.patch_size,args.stride,args.ratio,type='train')
+        data_eval = QuickBirdDataset(args.ms_data_path,args.pan_data_path,args.patch_size,args.stride,args.ratio,type='eval')
         evalLoader = DataLoader(data_eval, batch_size=1, num_workers=args.num_workers, shuffle=True,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
         data_test = QuickBirdDataset(args.ms_data_path,args.pan_data_path,args.patch_size,args.stride,args.ratio,type='test')
         testLoader = DataLoader(data_test, batch_size=1, num_workers=args.num_workers,shuffle=False,worker_init_fn=seed_worker,generator=torch.Generator().manual_seed(args.seed))
